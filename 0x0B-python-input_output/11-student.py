@@ -1,29 +1,57 @@
 #!/usr/bin/python3
-"""This module defines a class Student"""
+"""
+This program define a Student in a class
+"""
 
 
-class Student:
-    """Represent a student."""
+class Student():
+    """
+    Class of a student
+    """
 
     def __init__(self, first_name, last_name, age):
-        """Initializes a new Student
+        """
+        Constructor of a student
+        Args:
+          - first_name: str
+          - last_name: str
+          - age: int
         """
         self.first_name = first_name
         self.last_name = last_name
         self.age = age
 
     def to_json(self, attrs=None):
-        """Gets a dictionary representation of the Student.
-        If attrs is a list of strings, represents only those attributes
-        included in the list
         """
-        if (type(attrs) == list and
-                all(type(ele) == str for ele in attrs)):
-            return {k: getattr(self, k) for k in attrs if hasattr(self, k)}
-        return self.__dict__
+        Return the dict representation of the instance
+        Args:
+          - attrs: list (None default)
+        """
+
+        result = {}
+
+        if attrs is None:
+            return (self.__dict__)
+
+        for attr in attrs:
+            value = self.__dict__.get(attr)
+            if value is not None:
+                result[attr] = value
+
+        return (result)
 
     def reload_from_json(self, json):
-        """Replaces all attributes of the Student
         """
-        for k, v in json.items():
-            setattr(self, k, v)
+        Update all public instance attributes
+        Args:
+          - json: dict
+        """
+        dict_des = self.__dict__
+
+        for key, value in json.items():
+            if (dict_des.get(key) == self.first_name):
+                self.first_name = value
+            elif (dict_des.get(key) == self.last_name):
+                self.last_name = value
+            elif (dict_des.get(key) == self.age):
+                self.age = value
